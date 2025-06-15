@@ -53,7 +53,7 @@ jobs:
     - name: Get remote tag
       id: tag
       run: |
-        remoteTag=git ls-remote --exit-code --tags origin ${{ steps.package.outputs.version }}
+        remoteTag=$(git ls-remote --exit-code --tags origin ${{ steps.package.outputs.version }})
         echo "remote tag: $remoteTag"
         $remoteTag && echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT || echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
 
