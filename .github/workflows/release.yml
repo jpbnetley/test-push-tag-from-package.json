@@ -1,71 +1,71 @@
-# This is a basic workflow to help you get started with Actions
+# # This is a basic workflow to help you get started with Actions
 
-name: Tag Release
-run-name: Tag
+# name: Tag Release
+# run-name: Tag
 
-# Controls when the action will run.
-on:
-  workflow_dispatch:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: 
-      - main
+# # Controls when the action will run.
+# on:
+#   workflow_dispatch:
+#   # Triggers the workflow on push or pull request events but only for the main branch
+#   push:
+#     branches: 
+#       - main
 
-env:
-  node_version: 22
+# env:
+#   node_version: 22
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
   
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "install"
+# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# jobs:
+#   # This workflow contains a single job called "install"
   
-  build-and-publish-tag:
-    name: Create and push tag
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+#   build-and-publish-tag:
+#     name: Create and push tag
+#     # The type of runner that the job will run on
+#     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
+#     permissions:
+#       contents: write
 
-    steps:
-    - uses: actions/checkout@v4
-    - uses: pnpm/action-setup@v4
+#     steps:
+#     - uses: actions/checkout@v4
+#     - uses: pnpm/action-setup@v4
 
-    - name: Use Node.js ${{ env.node_version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.node_version }}
+#     - name: Use Node.js ${{ env.node_version }}
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: ${{ env.node_version }}
 
-    - name: Get version from package.json
-      id: package
-      run: |
-        version=$(node -p "require('./package.json').version")
-        echo "version from package json: $version"
-        echo "version=$version" >> $GITHUB_OUTPUT
+#     - name: Get version from package.json
+#       id: package
+#       run: |
+#         version=$(node -p "require('./package.json').version")
+#         echo "version from package json: $version"
+#         echo "version=$version" >> $GITHUB_OUTPUT
 
-    - name: Get git remote tag
-      id: tag
-      run: |
-        git fetch --tags
-        remoteTag=$(git tag --list "${{ steps.package.outputs.version }}")
-        if [ -z "$remoteTag" ]; then
-          echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
-          echo "No existing tag found for version: ${{ steps.package.outputs.version }}"
-        else
-          echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
-          echo "Existing tag found: $remoteTag"
-        fi
+#     - name: Get git remote tag
+#       id: tag
+#       run: |
+#         git fetch --tags
+#         remoteTag=$(git tag --list "${{ steps.package.outputs.version }}")
+#         if [ -z "$remoteTag" ]; then
+#           echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+#           echo "No existing tag found for version: ${{ steps.package.outputs.version }}"
+#         else
+#           echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
+#           echo "Existing tag found: $remoteTag"
+#         fi
         
-    - name: Set git user
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "github-actions@github.com"
+#     - name: Set git user
+#       run: |
+#         git config --global user.name "github-actions"
+#         git config --global user.email "github-actions@github.com"
 
-    - name: Push git tags
-      if: steps.tag.outputs.TAG_EXISTS == 'false'
-      run: |
-        git tag ${{ steps.package.outputs.version }}
-        git push origin ${{ steps.package.outputs.version }}
+#     - name: Push git tags
+#       if: steps.tag.outputs.TAG_EXISTS == 'false'
+#       run: |
+#         git tag ${{ steps.package.outputs.version }}
+#         git push origin ${{ steps.package.outputs.version }}
