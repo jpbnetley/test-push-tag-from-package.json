@@ -47,11 +47,15 @@ jobs:
       id: package
       run: |
         version=$(node -p "require('./package.json').version")
+        echo "version from package json: $version"
         echo "version=$version" >> $GITHUB_OUTPUT
 
     - name: Get remote tag
       id: tag
-      run: git ls-remote --exit-code --tags origin $${{ steps.package.outputs.package.version }} && echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT || echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+      run: |
+        remoteTag=git ls-remote --exit-code --tags origin ${{ steps.package.outputs.version }}
+        echo "remote tag: $remoteTag"
+        $remoteTag && echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT || echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
 
     - name: Set git user
       run: |
@@ -61,5 +65,5 @@ jobs:
     - name: Push tags
       if: steps.tag.outputs.TAG_EXISTS == 'false'
       run: |
-        git tag $${{ steps.package.outputs.package.version }}
-        git push origin $${{ steps.package.outputs.package.version }}
+        git tag $${{ steps.package.outputs.version }}
+        git push origin $${{ steps.package.outputs.version }}
