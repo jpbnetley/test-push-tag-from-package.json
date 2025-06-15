@@ -1,6 +1,6 @@
 {
   "name": "test-push-tag-from-package.json",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A test package to push a tag from package.json",
   "homepage": "https://github.com/jpbnetley/test-push-tag-from-package.json#readme",
   "bugs": {
