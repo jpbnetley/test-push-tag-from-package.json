@@ -1,7 +1,7 @@
 {
   "name": "test-push-tag-from-package.json",
   "version": "0.0.1",
-  "description": "",
+  "description": "A test package to push a tag from package.json",
   "homepage": "https://github.com/jpbnetley/test-push-tag-from-package.json#readme",
   "bugs": {
     "url": "https://github.com/jpbnetley/test-push-tag-from-package.json/issues"
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/jpbnetley/test-push-tag-from-package.json.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "Jonathan Netley",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
