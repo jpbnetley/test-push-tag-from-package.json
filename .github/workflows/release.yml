@@ -38,17 +38,15 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.node_version }}
-        cache: 'pnpm'
-        cache-dependency-path: 'pnpm-lock.yaml'
 
-    - name: Get version
+    - name: Get version from package.json
       id: package
       run: |
         version=$(node -p "require('./package.json').version")
         echo "version from package json: $version"
         echo "version=$version" >> $GITHUB_OUTPUT
 
-    - name: Get remote tag
+    - name: Get git remote tag
       id: tag
       run: |
         git fetch --tags
@@ -66,7 +64,7 @@ jobs:
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
 
-    - name: Push tags
+    - name: Push git tags
       if: steps.tag.outputs.TAG_EXISTS == 'false'
       run: |
         git tag ${{ steps.package.outputs.version }}
