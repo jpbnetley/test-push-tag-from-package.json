@@ -17,9 +17,6 @@ env:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
-permissions:
-  contents: write
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -63,7 +60,6 @@ jobs:
           echo "Existing tag found: $remoteTag"
         fi
         
-
     - name: Set git user
       run: |
         git config --global user.name "github-actions"
