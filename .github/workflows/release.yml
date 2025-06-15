@@ -26,7 +26,7 @@ jobs:
   # This workflow contains a single job called "install"
   
   build-and-publish-tag:
-    name: Build and publish
+    name: Create and push tag
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -53,9 +53,18 @@ jobs:
     - name: Get remote tag
       id: tag
       run: |
-        remoteTag=$(git ls-remote --exit-code --tags origin ${{ steps.package.outputs.version }})
+        git fetch --tags
+        remoteTag=$(git describe --tags $(git rev-list --tags --max-count=1))
         echo "remote tag: $remoteTag"
-        $remoteTag && echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT || echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+        echo "version=${remoteTag}" >> $GITHUB_OUTPUT
+        if [ -z "$remoteTag" ] || [ "$remoteTag" != "${{ steps.package.outputs.version }}" ]; then
+          echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+          echo "No existing tag found or version mismatch for tag: $remoteTag"
+        else
+          echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
+          echo "Existing tag found: $remoteTag"
+        fi
+        
 
     - name: Set git user
       run: |
