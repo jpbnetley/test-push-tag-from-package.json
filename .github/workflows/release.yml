@@ -39,6 +39,7 @@ jobs:
       with:
         node-version: ${{ env.node_version }}
         cache: 'pnpm'
+        cache-dependency-path: 'pnpm-lock.yaml'
 
     - name: Get version
       id: package
