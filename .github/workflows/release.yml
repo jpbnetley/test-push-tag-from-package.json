@@ -72,5 +72,5 @@ jobs:
     - name: Push tags
       if: steps.tag.outputs.TAG_EXISTS == 'false'
       run: |
-        git tag $${{ steps.package.outputs.version }}
-        git push origin $${{ steps.package.outputs.version }}
+        git tag ${{ steps.package.outputs.version }}
+        git push origin ${{ steps.package.outputs.version }}
