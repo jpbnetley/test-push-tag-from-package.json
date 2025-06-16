@@ -22,3 +22,6 @@ The workflow runs on pushes to the `main` branch or via manual dispatch.
 1. Update the `version` field in `package.json` as needed.
 2. Push changes to the `main` branch.
 3. The workflow will automatically create and push a tag if one does not already exist for that version.
+
+## Example of composite action being consumed
+- https://github.com/jpbnetley/push-tag-from-package.json-action
